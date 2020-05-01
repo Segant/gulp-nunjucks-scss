@@ -14,19 +14,47 @@
 
 
 // @import '../../node_modules/bootstrap-4-grid/scss/grid';
-@import 'mixins';
+// @import 'mixins';
 @import 'fonts';
-@import 'slick';
-@import 'lightbox';
+// @import 'slick';
+// @import 'lightbox';
+@import 'reset';
 @import 'header';
 @import 'footer';
 
+.container{
+	padding: 0 2rem;
+	max-width: 120rem;
+	width: 100%;
+	margin: auto;
+}
 
-// $black: #1a2231;
-// $grey: #474744;
-// $blue: #05bcd5;
-// $yellow: #f7cf44;
-// $red: #e7173f;
+ul{
+	list-style: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@import 'responsive';
+
 
 
 
