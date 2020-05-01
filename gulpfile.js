@@ -58,7 +58,7 @@ gulp.task('fonts',function(){
 gulp.task('images',function(){
   return gulp.src(folder.src + path.images)
 //   .pipe(imagemin())
-  .pipe(gulp.dest(folder.dist + 'images'))
+  .pipe(gulp.dest(folder.dist + 'img'))
   .pipe(browserSync.stream());
 });
 
