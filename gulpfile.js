@@ -81,10 +81,10 @@ gulp.task('serve', function() {
     },
   });
 
-  gulp.watch(folder.src + path.sass, ['css']);
-  gulp.watch(folder.src + path.nunjucks, ['html']);
+  gulp.watch(folder.src + path.sass, gulp.series(['css']) );
+  gulp.watch(folder.src + path.nunjucks, gulp.series(['html']) );
   // gulp.watch(folder.src + path.images, ['images']);
-  gulp.watch(folder.src + path.js, ['js']);
+  gulp.watch(folder.src + path.js, gulp.series(['js']) );
 
   // dont forget to place body tag in html (localhost:3001/help)
 });
@@ -92,5 +92,5 @@ gulp.task('serve', function() {
 
 
 
-gulp.task('default',['html','css','js','images','fonts','libs']);
+gulp.task('default',gulp.parallel(['html','css','js','images','fonts','libs']));
 
