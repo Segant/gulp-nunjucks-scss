@@ -6,8 +6,11 @@ const gulp = require('gulp');
 const nunjucks = require('gulp-nunjucks');
 // var nunjucksRender = require('gulp-nunjucks-render');
 const sass = require('gulp-sass');
-const autoprefixer = require('gulp-autoprefixer')
+const autoprefixer = require('gulp-autoprefixer');
+
 const imagemin = require('gulp-imagemin');
+const svgo = require('gulp-svgo');
+
 const clean = require('gulp-clean');
 
 const browserSync = require('browser-sync').create();
@@ -60,6 +63,7 @@ gulp.task('fonts', () => {
 gulp.task('images', () => {
   return gulp.src(folder.src + path.images)
     .pipe(imagemin())
+    .pipe(svgo())
     .pipe(gulp.dest(folder.dist + 'img'))
     .pipe(browserSync.stream());
 });
@@ -88,7 +92,7 @@ gulp.task('serve', function () {
     },
   });
 
-  gulp.watch(folder.src + path.sass, gulp.series(['css']));
+  gulp.watch([folder.src + path.sass], gulp.series(['css']));
   gulp.watch(folder.src + path.nunjucks, gulp.series(['html']));
   // gulp.watch(folder.src + path.images, ['images']);
   gulp.watch(folder.src + path.js, gulp.series(['js']));
