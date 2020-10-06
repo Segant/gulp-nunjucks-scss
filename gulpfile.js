@@ -31,7 +31,7 @@ const path = {
 
 
 gulp.task('html', () => {
-  return gulp.src(folder.src + path.nunjucks)
+  return gulp.src([folder.src + path.nunjucks, '!src/templates/includes/**/*.html', '!src/templates/layout/**/*.html'],)
     .pipe(nunjucks.compile())
     // .pipe(nunjucksRender({
     //   path: ['src/templates/'] // String or Array
