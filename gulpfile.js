@@ -8,11 +8,13 @@ const nunjucks = require('gulp-nunjucks');
 const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer')
 const imagemin = require('gulp-imagemin');
+const clean = require('gulp-clean');
+
 const browserSync = require('browser-sync').create();
 
 const folder = {
-  src :'src/',
-  dist:'dist/'
+  src: 'src/',
+  dist: 'dist/'
 };
 
 const path = {
@@ -25,66 +27,71 @@ const path = {
 };
 
 
-gulp.task('html',function(){
+gulp.task('html', () => {
   return gulp.src(folder.src + path.nunjucks)
-  .pipe(nunjucks.compile())
-  // .pipe(nunjucksRender({
-  //   path: ['src/templates/'] // String or Array
-  // }))
-  .pipe(gulp.dest(folder.dist))
-  .pipe(browserSync.stream());
+    .pipe(nunjucks.compile())
+    // .pipe(nunjucksRender({
+    //   path: ['src/templates/'] // String or Array
+    // }))
+    .pipe(gulp.dest(folder.dist))
+    .pipe(browserSync.stream());
 });
 
-gulp.task('css',function(){
+gulp.task('css', () => {
   return gulp.src(folder.src + path.sass)
-  .pipe(sass())
-  .pipe(autoprefixer())
-  .pipe(gulp.dest(folder.dist + 'css/'))
-  .pipe(browserSync.stream());
+    .pipe(sass())
+    .pipe(autoprefixer())
+    .pipe(gulp.dest(folder.dist + 'css/'))
+    .pipe(browserSync.stream());
 });
 
-gulp.task('js',function(){
+gulp.task('js', () => {
   return gulp.src(folder.src + path.js)
-  .pipe(gulp.dest(folder.dist + 'js'))
-  .pipe(browserSync.stream());
+    .pipe(gulp.dest(folder.dist + 'js'))
+    .pipe(browserSync.stream());
 });
 
-gulp.task('fonts',function(){
+gulp.task('fonts', () => {
   return gulp.src(folder.src + path.fonts)
-  .pipe(gulp.dest(folder.dist + 'fonts'))
-  .pipe(browserSync.stream());
+    .pipe(gulp.dest(folder.dist + 'fonts'))
+    .pipe(browserSync.stream());
 });
 
-gulp.task('images',function(){
+gulp.task('images', () => {
   return gulp.src(folder.src + path.images)
-//   .pipe(imagemin())
-  .pipe(gulp.dest(folder.dist + 'img'))
-  .pipe(browserSync.stream());
+    .pipe(imagemin())
+    .pipe(gulp.dest(folder.dist + 'img'))
+    .pipe(browserSync.stream());
 });
 
-gulp.task('libs',function(){
+gulp.task('libs', () => {
   return gulp.src(folder.src + path.libs)
-  .pipe(gulp.dest(folder.dist + 'libs'))
-  .pipe(browserSync.stream());
+    .pipe(gulp.dest(folder.dist + 'libs'))
+    .pipe(browserSync.stream());
+});
+
+gulp.task('clean', () => {
+  return gulp.src('dist/',{read: false})
+  .pipe(clean({force: true}))
 });
 
 
-gulp.task('serve', function() { 
+gulp.task('serve', function () {
   browserSync.init({
     open: false,
     server: {
       baseDir: "./dist",
       //online: false
       browser: "google chrome",
-      
+
       reloadDelay: 1000
     },
   });
 
-  gulp.watch(folder.src + path.sass, gulp.series(['css']) );
-  gulp.watch(folder.src + path.nunjucks, gulp.series(['html']) );
+  gulp.watch(folder.src + path.sass, gulp.series(['css']));
+  gulp.watch(folder.src + path.nunjucks, gulp.series(['html']));
   // gulp.watch(folder.src + path.images, ['images']);
-  gulp.watch(folder.src + path.js, gulp.series(['js']) );
+  gulp.watch(folder.src + path.js, gulp.series(['js']));
 
   // dont forget to place body tag in html (localhost:3001/help)
 });
@@ -92,5 +99,4 @@ gulp.task('serve', function() {
 
 
 
-gulp.task('default',gulp.parallel(['html','css','js','images','fonts','libs']));
-
+gulp.task('default', gulp.parallel(['html', 'css', 'js', 'images', 'fonts', 'libs']));
