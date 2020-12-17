@@ -13,6 +13,10 @@ const svgo = require('gulp-svgo');
 
 const clean = require('gulp-clean');
 
+const sassGlobal = require('gulp-sass-glob');
+const cached = require('gulp-cached');
+const dependents = require('gulp-dependents');
+
 const browserSync = require('browser-sync').create();
 
 const folder = {
@@ -42,7 +46,10 @@ gulp.task('html', () => {
 
 gulp.task('css', () => {
   return gulp.src(folder.src + path.sass)
-    .pipe(sass())
+    .pipe(cached('sasscache')) // 1
+    .pipe(dependents())
+    // .pipe(sassGlobal())
+    .pipe(sass()).on('error', sass.logError)
     .pipe(autoprefixer())
     .pipe(gulp.dest(folder.dist + 'css/'))
     .pipe(browserSync.stream());
@@ -75,19 +82,19 @@ gulp.task('libs', () => {
 });
 
 gulp.task('clean', () => {
-  return gulp.src('dist/',{read: false})
-  .pipe(clean({force: true}))
+  return gulp.src('dist/', { read: false })
+    .pipe(clean({ force: true }))
 });
 
 gulp.task('folders', () => {
-  return gulp.src('*.*',{read: false})
-  .pipe(gulp.dest(folder.dist + 'img'))
-  .pipe(gulp.dest(folder.dist + 'fonts'))
+  return gulp.src('*.*', { read: false })
+    .pipe(gulp.dest(folder.dist + 'img'))
+    .pipe(gulp.dest(folder.dist + 'fonts'))
 });
 
 gulp.task('copy-img', () => {
   return gulp.src(folder.dist + path.images)
-  .pipe(gulp.dest(folder.src + 'img'))
+    .pipe(gulp.dest(folder.src + 'img'))
 });
 
 
@@ -113,5 +120,5 @@ gulp.task('serve', function () {
 
 
 
-gulp.task('setup', gulp.parallel(['folders','html', 'css', 'js', 'images', 'fonts', 'libs']));
+gulp.task('setup', gulp.parallel(['folders', 'html', 'css', 'js', 'images', 'fonts', 'libs']));
 gulp.task('default', gulp.parallel(['html', 'css', 'js', 'images', 'fonts', 'libs']));
